@@ -864,7 +864,15 @@ def cmd_topic(topic: str, argv: list[str]) -> int:
                 total += len(hits)
                 print(f"\n{bold(green(relpath(p)))}")
                 shown = 0
-                for i, line in hits:
+                for hit in hits:
+                    if len(hit) == 4:
+                        i, line, _, platform = hit
+                    elif len(hit) == 3:
+                        i, line, platform = hit
+                    else:
+                        i, line = hit[:2]
+                        platform = None
+
                     if shown >= 5:
                         print(dim(f"  ... (+{len(hits) - 5} more — run: brain open {relpath(p)})"))
                         break
