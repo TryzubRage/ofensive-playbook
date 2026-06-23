@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
-brain — CLI index for the Writeups second-brain.
+brain â€” CLI index for the Writeups second-brain.
 
 Zero-dependency Python 3. Works on Linux and Git Bash on Windows.
 
@@ -8,7 +8,7 @@ Usage
 -----
   brain guide                    Beginner examples and search recipes.
   brain <topic> [keyword]        Search inside a curated topic scope.
-                                 `brain enumeration find` → every `find`
+                                 `brain enumeration find` â†’ every `find`
                                  command in enumeration tools/exploits,
                                  with file:line.
   brain topics                   List every topic and what it covers.
@@ -153,15 +153,15 @@ def _safe_regex(query: str) -> re.Pattern:
 
 
 def _shorten(text: str, width: int = 140) -> str:
-    return text if len(text) <= width else text[: width - 1] + "…"
+    return text if len(text) <= width else text[: width - 1] + "â€¦"
 
 
 def _separator(label: str = "") -> str:
     width = 78
     if not label:
-        return dim("─" * width)
+        return dim("â”€" * width)
     raw = f" {label} "
-    return dim("─" * 2) + bold(raw) + dim("─" * max(2, width - len(raw) - 2))
+    return dim("â”€" * 2) + bold(raw) + dim("â”€" * max(2, width - len(raw) - 2))
 
 
 def _highlight(line: str, pat: re.Pattern) -> str:
@@ -237,7 +237,7 @@ def _format_hit_line(lineno: int, line: str, pat: re.Pattern, *, command_hint: b
     shortened = _shorten(line.rstrip())
     rendered = _highlight(shortened, pat)
     
-    # Colorear según plataforma si es un comando
+    # Colorear segÃºn plataforma si es un comando
     if platform:
         platform_color_map = {
             "linux": cyan,
@@ -328,7 +328,7 @@ TOPICS: dict[str, dict] = {
                   "smbclient", "smbmap", "nuclei", "feroxbuster", "ffuf",
                   "gobuster", "wget", "proxychains", "foxyproxy", "ldap-utils",
                   "onesixtyone", "snmpwalk", "snmpset", "nikto", "bloodhound", "find", "grep",
-                  "httrack"],
+                  "httrack", "hping3", "ncat"],
         "exploits": ["smb-anonymous-enum", "anonymous-ftp-enumeration",
                      "smb-enumeration", "rid-brute-enumeration", "snmp",
                      "web-discovery", "file-transfers", "infrastructure-discovery"],
@@ -411,7 +411,7 @@ TOPICS: dict[str, dict] = {
         "desc": "Active Directory / Kerberos / SMB / LDAP",
         "tools": ["netexec", "impacket", "kerbrute", "smbclient", "evil-winrm",
                   "dnstool", "responder", "bloodhound", "mimikatz", "xfreerdp",
-                  "hydra", "ldap-utils", "runas", "powerpxe", "powerview"],
+                  "hydra", "ldap-utils", "runas", "powerpxe", "powerview", "bloodyad"],
         "exploits": ["adidns-poisoning", "kerberos-roasting", "password-spraying",
                      "smb-anonymous-enum", "smb-enumeration", "shadow-credentials",
                      "rid-brute-enumeration", "mssql-", "ntlm-capture-crack",
@@ -421,13 +421,15 @@ TOPICS: dict[str, dict] = {
                      "ldap-passback-attack", "asreproast",
                      "xmpp-spark-ntlm-leak", "invoke-expression-file-injection",
                      "pxe-boot-credential-scraping", "addself-privesc",
-                     "ad-enumeration", "active-directory-exploitation"],
+                     "ad-enumeration", "active-directory-exploitation",
+                     "ad-recycle-bin-restore", "malicious-vsix-extension-rce",
+                     "badsuccessor-dmsa"],
     },
     "web": {
         "desc": "Web / HTTP exploitation",
         "tools": ["curl", "sqlmap", "ffuf", "gobuster", "feroxbuster", "wget",
                   "whatweb", "exiftool", "gittools", "wpscan", "nuclei", "padre",
-                  "metasploit", "msfvenom", "nikto", "httrack"],
+                  "metasploit", "msfvenom", "nikto", "httrack", "hping3", "ncat"],
         "exploits": ["sweetrice-media-center-rce", "magnusbilling-rce",
                      "cacti-rce", "apache-cxf-xop-lfi", "oscommerce-installer-rce",
                      "backup-file-exposure", "lfi-php-parameter",
@@ -455,7 +457,8 @@ TOPICS: dict[str, dict] = {
                      "joomla-com-fields-sqli", "joomla-template-editor-webshell",
                      "freepbx-unauth-sqli-rce",
                      "xmpp-spark-ntlm-leak", "youtube-dl-command-injection",
-                     "nodejs-module-upload-rce"],
+                     "nodejs-module-upload-rce", "nodejs-ping-command-injection",
+                     "redis-webroot-webshell", "suricata-trigger-password-recovery"],
     },
     "webdav": {
         "desc": "WebDAV enumeration and exploitation",
@@ -501,7 +504,7 @@ TOPICS: dict[str, dict] = {
     },
     "rce": {
         "desc": "Remote Code Execution chains",
-        "tools": ["curl", "metasploit", "msfvenom", "searchsploit"],
+        "tools": ["curl", "metasploit", "msfvenom", "searchsploit", "aws"],
         "exploits": ["url-param-command-injection", "cacti-rce",
                      "codiad-rce", "oscommerce-installer-rce",
                      "sweetrice-media-center-rce", "magnusbilling-rce",
@@ -520,7 +523,9 @@ TOPICS: dict[str, dict] = {
                      "joomla-template-editor-webshell", "nodejs-eval-rce",
                      "asterisk-ami-command-execution",
                      "freepbx-unauth-sqli-rce", "invoke-expression-file-injection",
-                     "youtube-dl-command-injection", "nodejs-module-upload-rce"],
+                     "youtube-dl-command-injection", "nodejs-module-upload-rce",
+                     "nodejs-ping-command-injection", "redis-webroot-webshell",
+                     "sqs-job-yaml-rce"],
     },
     "reversing": {
         "desc": "Binary reverse engineering (SUID, custom binaries)",
@@ -531,10 +536,15 @@ TOPICS: dict[str, dict] = {
         "desc": "Backend DB enumeration & abuse (Mongo, SQLite, MySQL, Redis)",
         "tools": ["mongo", "mysql", "sqlite3", "redis-cli"],
         "exploits": ["mongodb-enumeration", "mssql-enumeration",
-                     "mssql-linked-server", "redis-auth-abuse",
+                     "mssql-linked-server", "redis-auth-abuse", "redis-webroot-webshell",
                      "zoneminder-sqli", "lfi-php-parameter",
                      "sql-union-injection", "nosql-json-login-bypass", "nosql-where-injection"],
         "payloads": ["mongodb", "nosql", "sql"],
+    },
+    "cloud": {
+        "desc": "Cloud metadata, AWS CLI, SQS and LocalStack-style abuse",
+        "tools": ["aws"],
+        "exploits": ["aws-metadata-ssrf", "sqs-job-yaml-rce"],
     },
     "crypto": {
         "desc": "Token prediction, padding oracles, weak crypto",
@@ -566,6 +576,7 @@ TOPIC_ALIASES = {
     "docker": "container", "containers": "container", "k8s": "container",
     "db": "database", "database": "database",
     "mongodb": "database", "sqlite": "database", "nosql": "database",
+    "aws": "cloud", "sqs": "cloud", "localstack": "cloud",
     "padding": "crypto", "oracle": "crypto", "weak-crypto": "crypto",
     "sql": "sqli",
 }
@@ -665,7 +676,7 @@ def scan_markdown(p: Path) -> list[LineHit]:
         if stripped.startswith("```"):
             in_code = not in_code
             command_hint_lines = 0
-            # Limpiar plataforma cuando termina el bloque de código
+            # Limpiar plataforma cuando termina el bloque de cÃ³digo
             if not in_code:
                 current_platform = None
             continue
@@ -750,7 +761,7 @@ def backrefs(target: Path) -> list[tuple[Path, int, str]]:
 # ---- Search primitives ----
 
 def _grep_file(p: Path, pat: re.Pattern, code_only: bool = False) -> list[tuple[int, str, bool, str | None]]:
-    # Plain-text payload lists: every line is a payload — treat as code-only content
+    # Plain-text payload lists: every line is a payload â€” treat as code-only content
     if p.suffix == ".txt":
         hits = []
         for i, line in enumerate(read_text(p).splitlines(), 1):
@@ -807,8 +818,8 @@ def cmd_stats(argv: list[str]) -> int:
                     if m:
                         for mac in m.group(1).split(","):
                             machines.add(mac.strip())
-    print(f"{counts.get('tools',0)} tools · {counts.get('exploits',0)} exploits · {counts.get('privesc',0)} privesc · {counts.get('techniques',0)} techniques · {counts.get('playbooks',0)} playbooks · {counts.get('payloads',0)} payloads · {counts.get('writeups',0)} writeups")
-    print(f"{topics_count} topics · {len(machines)} machines tracked")
+    print(f"{counts.get('tools',0)} tools Â· {counts.get('exploits',0)} exploits Â· {counts.get('privesc',0)} privesc Â· {counts.get('techniques',0)} techniques Â· {counts.get('playbooks',0)} playbooks Â· {counts.get('payloads',0)} payloads Â· {counts.get('writeups',0)} writeups")
+    print(f"{topics_count} topics Â· {len(machines)} machines tracked")
     return 0
 
 def cmd_topics(_: list[str]) -> int:
@@ -849,7 +860,7 @@ def cmd_topic(topic: str, argv: list[str]) -> int:
     if not files:
         print(red(f"No files in topic '{topic}'."))
         print(dim("Try `brain topics`, `brain guide`, or `brain find <keyword>`.")); return 1
-    # No keyword — list scope
+    # No keyword â€” list scope
     if not argv:
         spec = TOPICS.get(TOPIC_ALIASES.get(topic, topic), {})
         keywords = spec.get("keywords", [])
@@ -874,9 +885,9 @@ def cmd_topic(topic: str, argv: list[str]) -> int:
                         platform = None
 
                     if shown >= 5:
-                        print(dim(f"  ... (+{len(hits) - 5} more — run: brain open {relpath(p)})"))
+                        print(dim(f"  ... (+{len(hits) - 5} more â€” run: brain open {relpath(p)})"))
                         break
-                    line = line if len(line) <= 120 else line[:119] + "…"
+                    line = line if len(line) <= 120 else line[:119] + "â€¦"
                     highlight = pat.sub(lambda m: yellow(m.group(0)), line)
                     print(f"  :{i}  {highlight}")
                     shown += 1
@@ -902,9 +913,9 @@ def cmd_topic(topic: str, argv: list[str]) -> int:
         shown = 0
         for i, line, platform in hits:
             if shown >= 5:
-                print(dim(f"  ... (+{len(hits) - 5} more — run: brain open {relpath(p)})"))
+                print(dim(f"  ... (+{len(hits) - 5} more â€” run: brain open {relpath(p)})"))
                 break
-            line = line if len(line) <= 120 else line[:119] + "…"
+            line = line if len(line) <= 120 else line[:119] + "â€¦"
             highlight = pat.sub(lambda m: yellow(m.group(0)), line)
             if platform:
                 platform_color_map = {
@@ -1171,37 +1182,28 @@ def main(argv: list[str]) -> int:
         print(__doc__); return 0
     cmd, rest = argv[0], argv[1:]
 
-    # Map category command names to their directory categories
-    _CMD_CAT: dict[str, str] = {
-        "exploit": "exploits", "exploits": "exploits",
-        "tool": "tools", "tools": "tools",
-        "payload": "payloads", "payloads": "payloads",
-        "playbook": "playbooks", "playbooks": "playbooks",
-        "technique": "techniques", "techniques": "techniques",
-        "privesc": "privesc",
-        "writeup": "writeups", "writeups": "writeups",
-    }
-
     key = TOPIC_ALIASES.get(cmd, cmd)
 
-    # Category commands (tool, exploit, technique, writeup …) take priority when
+    # Category commands (tool, exploit, technique, writeup â€¦) take priority when
     # followed by a known or partial file name, including inline `search` sub-command.
-    if cmd in _CMD_CAT and rest:
-        cat = _CMD_CAT[cmd]
-        # `brain tool metasploit search route`  →  grep inside that file
+    if cmd in CATEGORY_COMMANDS:
+        cat = CATEGORY_COMMANDS[cmd]
+        if not rest:
+            return cmd_list([cat])
+        # `brain tool metasploit search route`  â†’  grep inside that file
         if len(rest) >= 3 and rest[1].lower() == "search":
             return cmd_show(cat, rest)
-        # `brain tool metasploit`  →  show the file (exact or partial match)
+        # `brain tool metasploit`  â†’  show the file (exact or partial match)
         found = _resolve_file(cat, rest[0], quiet=True)
         if found:
             return cmd_show(cat, rest)
-        # No file match → fall through to topic search (e.g. `brain web curl`)
+        return cmd_search([cat, *rest])
 
-    # Topic dispatch: `brain web curl`, `brain privesc sudo`, …
+    # Topic dispatch: `brain web curl`, `brain privesc sudo`, â€¦
     if key in TOPICS:
         return cmd_topic(key, rest)
 
-    # Fixed top-level commands: search, find, cmd, list, used-on, …
+    # Fixed top-level commands: search, find, cmd, list, used-on, â€¦
     if cmd in FIXED_COMMANDS:
         return FIXED_COMMANDS[cmd](rest) or 0
 

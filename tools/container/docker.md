@@ -36,8 +36,16 @@ Used on: **Kobold**
 <!-- cmd: linux -->
 ```bash
 docker run -v /:/host -it alpine chroot /host /bin/bash
+docker run -v /:/mnt --rm -it 495d6437fc1e chroot /mnt /bin/sh
 ```
-Used on: **Kobold**
+Used on: **Kobold**, **ultratech1**
+
+### List available local images
+<!-- cmd: linux -->
+```bash
+docker images
+```
+Used on: **ultratech1**
 
 ### Using a mounted Docker socket
 <!-- cmd: linux -->

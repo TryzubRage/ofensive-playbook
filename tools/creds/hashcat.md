@@ -73,6 +73,15 @@ Used on: **AttacktiveDirectory**
 
 Cracked AS-REP roasted etype 23 hash.
 
+### Crack Kerberos TGS (mode 13100)
+<!-- cmd: linux -->
+```bash
+hashcat -m 13100 -a 0 hash_rc4.txt /usr/share/wordlists/rockyou.txt --force
+```
+Used on: **Checkpoint**
+
+Cracked the RC4 Kerberoast hash after forcing `msDS-SupportedEncryptionTypes` to RC4-only.
+
 ## Mode Reference
 
 | Mode | Hash |

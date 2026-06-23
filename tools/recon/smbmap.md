@@ -33,3 +33,15 @@ smbmap -H $TARGET -u 'ArthurMorgan' -p 'DeadEye'
 Used on: **coldvvars**
 
 anonymous enum found the SMB surface; authenticated enum confirmed access to `SECURED`.
+
+### Domain credential share listing
+
+<!-- cmd: linux -->
+```bash
+smbmap -H $TARGET -u 'alex.turner' -p 'Checkpoint2024!'
+smbmap -H 10.129.23.75 -u 'mark.davies' -p 'Checkpoint2024!'
+```
+
+Used on: **Checkpoint**
+
+Confirmed initial SMB visibility and later write access to the `DevDrop` VSIX share.
