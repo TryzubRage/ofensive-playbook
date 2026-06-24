@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env python3
 """
-brain â€” CLI index for the Writeups second-brain.
+brain - CLI index for the Writeups second-brain.
 
 Zero-dependency Python 3. Works on Linux and Git Bash on Windows.
 
@@ -8,7 +8,7 @@ Usage
 -----
   brain guide                    Beginner examples and search recipes.
   brain <topic> [keyword]        Search inside a curated topic scope.
-                                 `brain enumeration find` â†’ every `find`
+                                 `brain enumeration find` -> every `find`
                                  command in enumeration tools/exploits,
                                  with file:line.
   brain topics                   List every topic and what it covers.
@@ -153,15 +153,15 @@ def _safe_regex(query: str) -> re.Pattern:
 
 
 def _shorten(text: str, width: int = 140) -> str:
-    return text if len(text) <= width else text[: width - 1] + "â€¦"
+    return text if len(text) <= width else text[: width - 1] + "..."
 
 
 def _separator(label: str = "") -> str:
     width = 78
     if not label:
-        return dim("â”€" * width)
+        return dim("-" * width)
     raw = f" {label} "
-    return dim("â”€" * 2) + bold(raw) + dim("â”€" * max(2, width - len(raw) - 2))
+    return dim("-" * 2) + bold(raw) + dim("-" * max(2, width - len(raw) - 2))
 
 
 def _highlight(line: str, pat: re.Pattern) -> str:
@@ -761,7 +761,7 @@ def backrefs(target: Path) -> list[tuple[Path, int, str]]:
 # ---- Search primitives ----
 
 def _grep_file(p: Path, pat: re.Pattern, code_only: bool = False) -> list[tuple[int, str, bool, str | None]]:
-    # Plain-text payload lists: every line is a payload â€” treat as code-only content
+    # Plain-text payload lists: every line is a payload - treat as code-only content
     if p.suffix == ".txt":
         hits = []
         for i, line in enumerate(read_text(p).splitlines(), 1):
@@ -860,7 +860,7 @@ def cmd_topic(topic: str, argv: list[str]) -> int:
     if not files:
         print(red(f"No files in topic '{topic}'."))
         print(dim("Try `brain topics`, `brain guide`, or `brain find <keyword>`.")); return 1
-    # No keyword â€” list scope
+    # No keyword - list scope
     if not argv:
         spec = TOPICS.get(TOPIC_ALIASES.get(topic, topic), {})
         keywords = spec.get("keywords", [])
@@ -885,9 +885,9 @@ def cmd_topic(topic: str, argv: list[str]) -> int:
                         platform = None
 
                     if shown >= 5:
-                        print(dim(f"  ... (+{len(hits) - 5} more â€” run: brain open {relpath(p)})"))
+                        print(dim(f"  ... (+{len(hits) - 5} more - run: brain open {relpath(p)})"))
                         break
-                    line = line if len(line) <= 120 else line[:119] + "â€¦"
+                    line = line if len(line) <= 120 else line[:119] + "..."
                     highlight = pat.sub(lambda m: yellow(m.group(0)), line)
                     print(f"  :{i}  {highlight}")
                     shown += 1
@@ -913,9 +913,9 @@ def cmd_topic(topic: str, argv: list[str]) -> int:
         shown = 0
         for i, line, platform in hits:
             if shown >= 5:
-                print(dim(f"  ... (+{len(hits) - 5} more â€” run: brain open {relpath(p)})"))
+                print(dim(f"  ... (+{len(hits) - 5} more - run: brain open {relpath(p)})"))
                 break
-            line = line if len(line) <= 120 else line[:119] + "â€¦"
+            line = line if len(line) <= 120 else line[:119] + "..."
             highlight = pat.sub(lambda m: yellow(m.group(0)), line)
             if platform:
                 platform_color_map = {
@@ -1184,26 +1184,26 @@ def main(argv: list[str]) -> int:
 
     key = TOPIC_ALIASES.get(cmd, cmd)
 
-    # Category commands (tool, exploit, technique, writeup â€¦) take priority when
+    # Category commands (tool, exploit, technique, writeup ...) take priority when
     # followed by a known or partial file name, including inline `search` sub-command.
     if cmd in CATEGORY_COMMANDS:
         cat = CATEGORY_COMMANDS[cmd]
         if not rest:
             return cmd_list([cat])
-        # `brain tool metasploit search route`  â†’  grep inside that file
+        # `brain tool metasploit search route`  ->  grep inside that file
         if len(rest) >= 3 and rest[1].lower() == "search":
             return cmd_show(cat, rest)
-        # `brain tool metasploit`  â†’  show the file (exact or partial match)
+        # `brain tool metasploit`  ->  show the file (exact or partial match)
         found = _resolve_file(cat, rest[0], quiet=True)
         if found:
             return cmd_show(cat, rest)
         return cmd_search([cat, *rest])
 
-    # Topic dispatch: `brain web curl`, `brain privesc sudo`, â€¦
+    # Topic dispatch: `brain web curl`, `brain privesc sudo`, ...
     if key in TOPICS:
         return cmd_topic(key, rest)
 
-    # Fixed top-level commands: search, find, cmd, list, used-on, â€¦
+    # Fixed top-level commands: search, find, cmd, list, used-on, ...
     if cmd in FIXED_COMMANDS:
         return FIXED_COMMANDS[cmd](rest) or 0
 
