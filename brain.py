@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 brain - CLI index for the Writeups second-brain.
 
@@ -376,7 +376,8 @@ TOPICS: dict[str, dict] = {
                      "suid-find-escape", "incron-module-hijacking",
                      "invoke-expression-file-injection", "mcafee-madb-credential-recovery",
                      "addself-privesc", "token-impersonation", "uac-bypass-uacme",
-                     "windows-kernel-exploits", "abusing-suid-binaries", "linux-privilege-escalation"],
+                     "windows-kernel-exploits", "abusing-suid-binaries", "linux-privilege-escalation",
+                     "telnet-user-env-privesc-cve-2026-24061", "olivetin-cmd-injection-cve-2026-27626"],
     },
     "shells": {
         "desc": "Reverse-shell one-liners and listener patterns",
@@ -396,7 +397,7 @@ TOPICS: dict[str, dict] = {
     "creds": {
         "desc": "Credential hunting, cracking, reuse",
         "tools": ["hashcat", "john", "gpg", "tcpdump", "strings", "responder",
-                  "mimikatz", "hydra", "ldap-utils", "mcafee-sitelist-pwd-decrypt"],
+                  "mimikatz", "hydra", "ldap-utils", "mcafee-sitelist-pwd-decrypt", "whisper"],
         "exploits": ["bash-history-credentials", "env-variable-enum",
                      "ntlm-capture-crack", "pgp-key-cracking",
                      "password-spraying", "kerberos-roasting", "shadow-credentials",
@@ -458,7 +459,10 @@ TOPICS: dict[str, dict] = {
                      "freepbx-unauth-sqli-rce",
                      "xmpp-spark-ntlm-leak", "youtube-dl-command-injection",
                      "nodejs-module-upload-rce", "nodejs-ping-command-injection",
-                     "redis-webroot-webshell", "suricata-trigger-password-recovery"],
+                     "redis-webroot-webshell", "suricata-trigger-password-recovery",
+                     "openstamanager-rce-cve-2026-38751", "craftcms-rce-cve-2025-32432",
+                     "olivetin-cmd-injection-cve-2026-27626", "ocr-save-path-traversal-rce",
+                     "wordpress-xss-csrf-admin-creation"],
     },
     "webdav": {
         "desc": "WebDAV enumeration and exploitation",
@@ -468,7 +472,8 @@ TOPICS: dict[str, dict] = {
     "xss": {
         "desc": "Cross-site scripting payloads and XSS note types",
         "tools": [],
-        "exploits": ["xss", "stored-xss", "reflected-xss", "dom-based-xss", "blind-xss"],
+        "exploits": ["xss", "stored-xss", "reflected-xss", "dom-based-xss", "blind-xss",
+                     "wordpress-xss-csrf-admin-creation"],
         "payloads": ["xss"],
     },
     "container": {
@@ -480,7 +485,7 @@ TOPICS: dict[str, dict] = {
     },
     "stego": {
         "desc": "Steganography / metadata loot",
-        "tools": ["exiftool", "steghide", "strings"],
+        "tools": ["exiftool", "steghide", "strings", "whisper"],
         "exploits": ["steganography-image-loot", "pgp-key-cracking",
                      "ds-store-disclosure", "npiet-piet-stego",
                      "php-exiftool-comment-webshell"],
@@ -525,7 +530,9 @@ TOPICS: dict[str, dict] = {
                      "freepbx-unauth-sqli-rce", "invoke-expression-file-injection",
                      "youtube-dl-command-injection", "nodejs-module-upload-rce",
                      "nodejs-ping-command-injection", "redis-webroot-webshell",
-                     "sqs-job-yaml-rce"],
+                     "sqs-job-yaml-rce",
+                     "openstamanager-rce-cve-2026-38751", "craftcms-rce-cve-2025-32432",
+                     "olivetin-cmd-injection-cve-2026-27626", "ocr-save-path-traversal-rce"],
     },
     "reversing": {
         "desc": "Binary reverse engineering (SUID, custom binaries)",
@@ -818,8 +825,8 @@ def cmd_stats(argv: list[str]) -> int:
                     if m:
                         for mac in m.group(1).split(","):
                             machines.add(mac.strip())
-    print(f"{counts.get('tools',0)} tools Â· {counts.get('exploits',0)} exploits Â· {counts.get('privesc',0)} privesc Â· {counts.get('techniques',0)} techniques Â· {counts.get('playbooks',0)} playbooks Â· {counts.get('payloads',0)} payloads Â· {counts.get('writeups',0)} writeups")
-    print(f"{topics_count} topics Â· {len(machines)} machines tracked")
+    print(f"{counts.get('tools',0)} tools · {counts.get('exploits',0)} exploits · {counts.get('privesc',0)} privesc · {counts.get('techniques',0)} techniques · {counts.get('playbooks',0)} playbooks · {counts.get('payloads',0)} payloads · {counts.get('writeups',0)} writeups")
+    print(f"{topics_count} topics · {len(machines)} machines tracked")
     return 0
 
 def cmd_topics(_: list[str]) -> int:

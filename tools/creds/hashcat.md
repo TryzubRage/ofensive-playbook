@@ -25,7 +25,20 @@ hashcat -m 5600 hash /usr/share/wordlists/rockyou.txt --force --show
 ```bash
 hashcat -m 3200 hash.txt /usr/share/wordlists/rockyou.txt
 ```
-Used on: **CCTV, marketplace** (alternative to John).
+Used on: **CCTV**, **marketplace** (alternative to John).
+
+<!-- cmd: linux -->
+```bash
+hashcat -m 3200 -a 0 hash_haris.txt /usr/share/wordlists/rockyou.txt --force
+```
+Used on: **Enigma** — cracked `haris`'s `$2y$10$` bcrypt from the OpenSTAManager MySQL DB; result: `bestfriends`.
+
+<!-- cmd: linux -->
+```bash
+hashcat -m 3200 hash.txt /usr/share/wordlists/rockyou.txt -O
+hashcat -m 3200 hash.txt --show
+```
+Used on: **Orion** — cracked `adam`'s `$2y$13$` bcrypt from the Craft CMS MySQL DB; result: `darkangel`. `-O` (optimised kernels) speeds things up at the cost of a shorter maximum password length.
 
 ### Crack raw SHA-1 (mode 100)
 <!-- cmd: linux -->
